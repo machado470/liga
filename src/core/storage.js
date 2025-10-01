@@ -4,9 +4,11 @@
 import { K } from './config.js';
 
 const ns = K.ns;
+
+// Garante que toda key salva tenha namespace (evita duplicação e bugs)
 const full = (key) => {
   const k = String(key || '');
-  return k.startsWith(ns) ? k : ns + k; // evita "duplo namespace"
+  return k.startsWith(ns) ? k : ns + k;
 };
 
 // ===== CRUD básico =====
@@ -23,8 +25,8 @@ export function write(key, value) {
   try {
     localStorage.setItem(full(key), JSON.stringify(value));
     return value;
-  } catch {
-    console.error('Erro ao salvar em localStorage', key, value);
+  } catch (err) {
+    console.error('Erro ao salvar em localStorage:', key, value, err);
     return value;
   }
 }
@@ -86,7 +88,7 @@ export function clearAll() {
   });
 }
 
-// ===== Debug (opcional) =====
+// ===== Debug =====
 export function dump() {
   return listKeys().reduce((acc, k) => {
     acc[k] = read(k.replace(ns, ''));
