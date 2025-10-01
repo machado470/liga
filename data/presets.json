@@ -7,7 +7,6 @@
     "description": "Presets iniciais para regras, elenco, estatísticas e partidas da Liga da Firma 2025.",
     "notes": "Este arquivo pode ser usado para resetar ou importar dados iniciais no sistema."
   },
-
   "settings": {
     "ptsV": 3,
     "ptsE": 1,
@@ -15,7 +14,6 @@
     "autoResetDaily": true,
     "maxPlayersPerTeam": 8
   },
-
   "athletes": [
     "João",
     "Pedro",
@@ -24,7 +22,6 @@
     "Rafael",
     "Felipe"
   ],
-
   "matches": {
     "2025-09-30": [
       {
@@ -37,18 +34,14 @@
       }
     ]
   },
-
   "lastDay": "2025-09-30",
-
   "forms": {
     "2025-09-30": {
       "A": "3-2",
       "B": "2-3"
     }
   },
-
   "manualPos": {},
-
   "stats": {
     "João":   { "J": 1, "V": 1, "E": 0, "D": 0, "GP": 3, "GC": 2, "SG": 1, "Pts": 3 },
     "Pedro":  { "J": 1, "V": 1, "E": 0, "D": 0, "GP": 3, "GC": 2, "SG": 1, "Pts": 3 },
@@ -57,7 +50,6 @@
     "Rafael": { "J": 1, "V": 0, "E": 0, "D": 1, "GP": 2, "GC": 3, "SG": -1, "Pts": 0 },
     "Felipe": { "J": 1, "V": 0, "E": 0, "D": 1, "GP": 2, "GC": 3, "SG": -1, "Pts": 0 }
   },
-
   "charts": {
     "topScorers": ["João", "Pedro"],
     "topPPG": ["João"],
