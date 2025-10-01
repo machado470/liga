@@ -1,3 +1,4 @@
+// server.js — servidor estático leve p/ Liga da Firma
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
@@ -6,9 +7,10 @@ const { URL } = require('url');
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3000;
 const ROOT = process.cwd();
 const PUBLIC_DIR = path.resolve(ROOT, 'public');
-const SRC_DIR = path.resolve(ROOT, 'src');
-const DATA_DIR = path.resolve(ROOT, 'data');
+const SRC_DIR    = path.resolve(ROOT, 'src');
+const DATA_DIR   = path.resolve(ROOT, 'data');
 
+// MIME types essenciais
 const MIME = {
   '.html': 'text/html; charset=utf-8',
   '.css': 'text/css; charset=utf-8',
@@ -24,6 +26,8 @@ const MIME = {
   '.map': 'application/json; charset=utf-8',
   '.txt': 'text/plain; charset=utf-8',
   '.webmanifest': 'application/manifest+json; charset=utf-8',
+  '.woff2': 'font/woff2',
+  '.wasm': 'application/wasm',
 };
 
 function contentType(filePath) {
@@ -31,10 +35,11 @@ function contentType(filePath) {
   return MIME[ext] || 'application/octet-stream';
 }
 
+// Guard anti-path traversal (mais rígido)
 function safeJoin(base, target) {
   const p = path.normalize(path.join(base, target));
-  if (!p.startsWith(base)) return null; // path traversal guard
-  return p;
+  const baseNorm = path.resolve(base) + path.sep;
+  return p.startsWith(baseNorm) ? p : null;
 }
 
 function send(res, code, body, headers = {}) {
@@ -43,71 +48,79 @@ function send(res, code, body, headers = {}) {
   return res.end(String(body ?? ''));
 }
 
+// Cache: index sem cache; assets com 1h (dev)
 function serveFile(res, filePath) {
   fs.stat(filePath, (err, st) => {
     if (err || !st.isFile()) return send(res, 404, 'Not Found');
     const type = contentType(filePath);
-    res.writeHead(200, { 'Content-Type': type, 'Cache-Control': 'no-cache' });
+    const isIndex = /[/\\]public[/\\]index\.html$/.test(filePath);
+    const cache = isIndex ? 'no-cache' : 'public, max-age=3600';
+    res.writeHead(200, { 'Content-Type': type, 'Cache-Control': cache });
     fs.createReadStream(filePath).pipe(res);
   });
+}
+
+function serveIfExists(res, baseDir, relPath) {
+  const fp = safeJoin(baseDir, relPath);
+  if (!fp) return send(res, 400, 'Bad Request');
+  return serveFile(res, fp);
 }
 
 function handler(req, res) {
   try {
     const u = new URL(req.url, `http://localhost:${PORT}`);
-    let pathname = decodeURI(u.pathname);
+    const pathname = decodeURI(u.pathname);
 
-    // Root → public/index.html
+    // Raiz → index.html
     if (pathname === '/' || pathname === '/index.html') {
       return serveFile(res, path.join(PUBLIC_DIR, 'index.html'));
     }
 
-    // Allow /public/* direct access (helpful during dev)
+    // Mapear assets públicos
+    if (
+      pathname.startsWith('/assets/') ||
+      pathname === '/manifest.webmanifest' ||
+      pathname === '/favicon.ico' ||
+      pathname === '/robots.txt'
+    ) {
+      return serveIfExists(res, PUBLIC_DIR, pathname.replace(/^\//, ''));
+    }
+
+    // Expor /public/* (útil no dev)
     if (pathname.startsWith('/public/')) {
-      const rel = pathname.replace(/^\/public\//, '');
-      const fp = safeJoin(PUBLIC_DIR, rel);
-      if (!fp) return send(res, 400, 'Bad Request');
-      return serveFile(res, fp);
+      return serveIfExists(res, PUBLIC_DIR, pathname.replace(/^\/public\//, ''));
     }
 
-    // Map /assets/*, /manifest.webmanifest, /favicon.ico to public
-    if (pathname.startsWith('/assets/') || pathname === '/manifest.webmanifest' || pathname === '/favicon.ico' || pathname === '/robots.txt') {
-      const rel = pathname.replace(/^\//, '');
-      const fp = safeJoin(PUBLIC_DIR, rel);
-      if (!fp) return send(res, 400, 'Bad Request');
-      return serveFile(res, fp);
-    }
-
-    // Map /src/* to src directory (ESM direct in browser)
+    // Expor módulos ES do front: /src/*
     if (pathname.startsWith('/src/')) {
-      const rel = pathname.replace(/^\/src\//, '');
-      const fp = safeJoin(SRC_DIR, rel);
-      if (!fp) return send(res, 400, 'Bad Request');
-      return serveFile(res, fp);
+      return serveIfExists(res, SRC_DIR, pathname.replace(/^\/src\//, ''));
     }
 
-    // Map /data/* to data directory
+    // Expor dados JSON: /data/*
     if (pathname.startsWith('/data/')) {
-      const rel = pathname.replace(/^\/data\//, '');
-      const fp = safeJoin(DATA_DIR, rel);
-      if (!fp) return send(res, 400, 'Bad Request');
-      return serveFile(res, fp);
+      return serveIfExists(res, DATA_DIR, pathname.replace(/^\/data\//, ''));
     }
 
-    // Fallback: try public/*
+    // Tentar arquivo em public/
     {
       const rel = pathname.replace(/^\//, '');
       const fp = safeJoin(PUBLIC_DIR, rel);
-      if (fp) return serveFile(res, fp);
+      if (fp) {
+        return fs.stat(fp, (err, st) => {
+          if (!err && st.isFile()) return serveFile(res, fp);
+          // Fallback SPA: devolve index.html para rotas do front
+          return serveFile(res, path.join(PUBLIC_DIR, 'index.html'));
+        });
+      }
     }
 
     return send(res, 404, 'Not Found');
-  } catch (e) {
+  } catch {
     return send(res, 500, 'Internal Server Error');
   }
 }
 
 const server = http.createServer(handler);
 server.listen(PORT, () => {
-  console.log(`[dev] Liga da Firma server listening on http://localhost:${PORT}`);
+  console.log(`[dev] Liga da Firma em http://localhost:${PORT}`);
 });
