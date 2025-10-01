@@ -9,7 +9,7 @@ import { init as initRanking }   from './modules/ranking.js';
 import { initRouter }            from './core/router.js';
 
 import { showToast } from './ui/toast.js';
-import { setText }   from './core/dom.js';
+import { setText }   from './utils/dom.js';
 import { read, write } from './core/storage.js';
 import { K, todayISO, keyLastDay } from './core/config.js';
 import { initCharts } from './ui/chart.js';
