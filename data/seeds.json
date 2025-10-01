@@ -6,14 +6,12 @@
     "author": "Liga da Firma Dev Team",
     "description": "Semente de dados iniciais para popular a Liga da Firma do zero com elenco, regras e partidas de exemplo."
   },
-
   "settings": {
     "ptsV": 3,
     "ptsE": 1,
     "ptsD": 0,
     "autoResetDaily": false
   },
-
   "athletes": [
     "João",
     "Pedro",
@@ -26,7 +24,6 @@
     "Carlos",
     "Henrique"
   ],
-
   "matches": [
     {
       "date": "2025-09-25",
@@ -53,7 +50,6 @@
       "obs": "Rodada 3 — virada no fim"
     }
   ],
-
   "stats": {
     "João":   { "J": 2, "V": 1, "E": 1, "D": 0, "GP": 7, "GC": 5, "SG": 2, "Pts": 4 },
     "Pedro":  { "J": 3, "V": 1, "E": 1, "D": 1, "GP": 8, "GC": 7, "SG": 1, "Pts": 4 },
@@ -66,13 +62,11 @@
     "Carlos": { "J": 1, "V": 0, "E": 1, "D": 0, "GP": 3, "GC": 3, "SG": 0, "Pts": 1 },
     "Henrique": { "J": 2, "V": 1, "E": 1, "D": 0, "GP": 5, "GC": 4, "SG": 1, "Pts": 4 }
   },
-
   "charts": {
     "topScorers": ["Pedro", "João"],
     "topPPG": ["João", "Henrique"],
     "bestDefense": ["Lucas"]
   },
-
   "forms": {},
   "manualPos": {},
   "lastDay": "2025-09-27"
