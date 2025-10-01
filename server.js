@@ -10,7 +10,6 @@ const PUBLIC_DIR = path.resolve(ROOT, 'public');
 const SRC_DIR    = path.resolve(ROOT, 'src');
 const DATA_DIR   = path.resolve(ROOT, 'data');
 
-// MIME types essenciais
 const MIME = {
   '.html': 'text/html; charset=utf-8',
   '.css': 'text/css; charset=utf-8',
@@ -35,7 +34,7 @@ function contentType(filePath) {
   return MIME[ext] || 'application/octet-stream';
 }
 
-// Guard anti-path traversal (mais rígido)
+// Guard anti-traversal rígido
 function safeJoin(base, target) {
   const p = path.normalize(path.join(base, target));
   const baseNorm = path.resolve(base) + path.sep;
@@ -86,12 +85,12 @@ function handler(req, res) {
       return serveIfExists(res, PUBLIC_DIR, pathname.replace(/^\//, ''));
     }
 
-    // Expor /public/* (útil no dev)
+    // Expor /public/* (dev)
     if (pathname.startsWith('/public/')) {
       return serveIfExists(res, PUBLIC_DIR, pathname.replace(/^\/public\//, ''));
     }
 
-    // Expor módulos ES do front: /src/*
+    // Expor módulos ES: /src/*
     if (pathname.startsWith('/src/')) {
       return serveIfExists(res, SRC_DIR, pathname.replace(/^\/src\//, ''));
     }
@@ -101,17 +100,14 @@ function handler(req, res) {
       return serveIfExists(res, DATA_DIR, pathname.replace(/^\/data\//, ''));
     }
 
-    // Tentar arquivo em public/
-    {
-      const rel = pathname.replace(/^\//, '');
-      const fp = safeJoin(PUBLIC_DIR, rel);
-      if (fp) {
-        return fs.stat(fp, (err, st) => {
-          if (!err && st.isFile()) return serveFile(res, fp);
-          // Fallback SPA: devolve index.html para rotas do front
-          return serveFile(res, path.join(PUBLIC_DIR, 'index.html'));
-        });
-      }
+    // Tentar arquivo direto em public/; senão SPA fallback
+    const rel = pathname.replace(/^\//, '');
+    const fp = safeJoin(PUBLIC_DIR, rel);
+    if (fp) {
+      return fs.stat(fp, (err, st) => {
+        if (!err && st.isFile()) return serveFile(res, fp);
+        return serveFile(res, path.join(PUBLIC_DIR, 'index.html'));
+      });
     }
 
     return send(res, 404, 'Not Found');

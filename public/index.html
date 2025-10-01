@@ -11,6 +11,7 @@
 </head>
 
 <body>
+  <!-- ================= HERO / HEADER ================= -->
   <header class="hero container" role="banner">
     <div class="ball" aria-hidden="true">⚽</div>
     <div>
@@ -19,6 +20,7 @@
     </div>
   </header>
 
+  <!-- ================= NAV ================= -->
   <nav class="container" aria-label="Navegação principal" style="margin-top:10px">
     <div class="row" role="tablist" aria-orientation="horizontal">
       <button class="btn-ghost" data-route="/regras"  role="tab" aria-controls="regras">⚙️ Regras</button>
@@ -31,18 +33,243 @@
     </div>
   </nav>
 
+  <!-- ================= MAIN APP ================= -->
   <main class="container">
-    <!-- …seções intactas… -->
-    <!-- Regras / Atletas / Campo / Registro / Calendário / Ranking -->
+
+    <!-- ===== Regras ===== -->
+    <section class="card" id="regras">
+      <h2>🏆 Regras
+        <span class="help" aria-expanded="false" aria-label="Ajuda">
+          ?
+          <span class="tooltip">Defina os pontos por vitória, empate e derrota. O ranking recalcula automaticamente após cada partida.</span>
+        </span>
+      </h2>
+
+      <div class="helpbar">
+        <div class="hint" data-hint>
+          <b>Como funciona:</b> escolha a pontuação para <u>vitória</u>, <u>empate</u> e <u>derrota</u>. Você pode mudar a qualquer momento.
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <div>
+          <div class="section-title muted">
+            Vitória
+            <span class="help" aria-expanded="false" aria-label="Ajuda">
+              ?
+              <span class="tooltip">Pontos concedidos quando um time vence.</span>
+            </span>
+          </div>
+          <input class="input" id="ptsV" type="number" min="0" step="1" inputmode="numeric" />
+        </div>
+        <div>
+          <div class="section-title muted">
+            Empate
+            <span class="help" aria-expanded="false" aria-label="Ajuda">
+              ?
+              <span class="tooltip">Pontos dados para cada equipe quando o jogo termina empatado.</span>
+            </span>
+          </div>
+          <input class="input" id="ptsE" type="number" min="0" step="1" inputmode="numeric" />
+        </div>
+        <div>
+          <div class="section-title muted">
+            Derrota
+            <span class="help" aria-expanded="false" aria-label="Ajuda">
+              ?
+              <span class="tooltip">Pontos concedidos ao time derrotado (geralmente 0).</span>
+            </span>
+          </div>
+          <input class="input" id="ptsD" type="number" min="0" step="1" inputmode="numeric" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Atletas ===== -->
+    <section class="card" id="times">
+      <h2>🧑 Atletas
+        <span class="help" aria-expanded="false" aria-label="Ajuda">
+          ?
+          <span class="tooltip">Adicione nomes. Cada chip alterna <b>Fora → A → B → Fora</b> ao clicar. Use “Inverter A/B” para trocar os times.</span>
+        </span>
+      </h2>
+
+      <div class="helpbar">
+        <div class="hint" data-hint>
+          <b>Elenco e times:</b> digite o nome e clique em <b>Adicionar</b>. Toque no chip para alternar o jogador entre Fora, Time A e Time B.
+        </div>
+      </div>
+
+      <div class="row">
+        <input class="input" id="novoJogador" placeholder="Nome do atleta" autocomplete="off" />
+        <button class="btn" id="btnAddJogador">Adicionar</button>
+        <button class="btn-ghost" id="btnUndoJogador">Desfazer último</button>
+      </div>
+
+      <div class="section-title muted">Elenco (toque para alternar: fora → A → B → fora)</div>
+      <div id="chipsAtletas" class="chips" aria-live="polite"></div>
+
+      <div class="grid-2 mt12">
+        <div>
+          <div class="section-title muted">Time A</div>
+          <div class="team" id="listaA"></div>
+        </div>
+        <div>
+          <div class="section-title muted">Time B</div>
+          <div class="team" id="listaB"></div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="btn-ghost" id="btnLimparSel">Limpar seleção</button>
+        <button class="btn-ghost" id="btnInverter">Inverter A/B</button>
+      </div>
+    </section>
+
+    <!-- ===== Campo Tático ===== -->
+    <section class="card" id="tatico">
+      <h2>📋 Campo tático
+        <span class="help" aria-expanded="false" aria-label="Ajuda">
+          ?
+          <span class="tooltip">Escolha uma formação para cada time ou deixe em <i>auto</i>. Os nomes são posicionados automaticamente.</span>
+        </span>
+      </h2>
+
+      <div class="helpbar">
+        <div class="hint" data-hint>
+          <b>Formações:</b> selecione um esquema (ex.: 3-2, 2-3, 3-3-2) ou <i>auto</i>. O posicionamento usa a formação escolhida.
+        </div>
+      </div>
+
+      <div class="row" id="toolbarTatico"></div>
+
+      <div class="formations">
+        <div class="pitch-wrap">
+          <div class="pitch-head">
+            <span class="badge">Time A</span>
+            <select class="input select-small" id="formA" aria-label="Formação do time A"></select>
+          </div>
+          <div class="pitch">
+            <div class="field" id="fieldA"><div class="players" id="playersA"></div></div>
+          </div>
+        </div>
+
+        <div class="pitch-wrap">
+          <div class="pitch-head">
+            <span class="badge">Time B</span>
+            <select class="input select-small" id="formB" aria-label="Formação do time B"></select>
+          </div>
+          <div class="pitch">
+            <div class="field" id="fieldB"><div class="players" id="playersB"></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Registrar Partida ===== -->
+    <section class="card" id="registro">
+      <h2>🗒️ Registrar partida
+        <span class="help" aria-expanded="false" aria-label="Ajuda">
+          ?
+          <span class="tooltip">Informe os placares, escreva uma observação (opcional) e salve. O jogo vai para o Calendário e o Ranking é atualizado.</span>
+        </span>
+      </h2>
+
+      <div class="helpbar">
+        <div class="hint" data-hint>
+          <b>Registro:</b> selecione os times em “Atletas”, informe o placar e clique em <b>Salvar partida</b>. O resultado aparece no <b>Calendário</b>.
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="score" role="group" aria-label="Placar">
+          <span id="lblA">A</span>
+          <input class="input score-in" id="placarA" type="number" min="0" step="1" inputmode="numeric" aria-label="Gols do time A" />
+          <span class="x" aria-hidden="true">×</span>
+          <input class="input score-in" id="placarB" type="number" min="0" step="1" inputmode="numeric" aria-label="Gols do time B" />
+          <span id="lblB">B</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <input class="input" id="obs" placeholder="ex.: rodada 3, amistoso" />
+        <button class="btn" id="btnSalvar">Salvar partida</button>
+        <button class="btn-ghost" id="btnDesfazerPartida">Desfazer</button>
+      </div>
+
+      <label class="row mt8">
+        <input id="autoReset" type="checkbox" />
+        <span class="muted">Reset automático diário (só o quadro do dia)</span>
+      </label>
+      <button class="btn-ghost" id="btnResetHoje">Zerar HOJE</button>
+    </section>
+
+    <!-- ===== Calendário ===== -->
+    <section class="card" id="calendario">
+      <h2>📅 Calendário
+        <span class="help" aria-expanded="false" aria-label="Ajuda">
+          ?
+          <span class="tooltip">Navegue pelos dias, veja jogos e exclua se precisar. O resumo mostra total de jogos e gols do dia.</span>
+        </span>
+      </h2>
+
+      <div class="helpbar">
+        <div class="hint" data-hint>
+          <b>Navegação:</b> use <b>Anterior/Próximo</b> ou escolha uma data. Clique no botão do card para excluir uma partida.
+        </div>
+      </div>
+
+      <div class="cal-toolbar">
+        <button class="btn-ghost" id="calPrev">← Anterior</button>
+        <input class="input date-picker" type="date" id="pickDay" />
+        <button class="btn-ghost" id="calNext">Próximo →</button>
+      </div>
+
+      <div class="cal-head">
+        <span class="muted">Resumo do dia:</span>
+        <span class="badge" id="calResumo">—</span>
+      </div>
+
+      <div class="games" id="listaJogosDia"></div>
+    </section>
+
+    <!-- ===== Ranking ===== -->
+    <section class="card" id="tabela">
+      <h2 class="row" style="justify-content:space-between">
+        <span>📊 Ranking geral</span><span class="badge">Tabela</span>
+      </h2>
+
+      <div class="helpbar">
+        <div class="hint" data-hint>
+          <b>Critérios:</b> ordena por <u>Pontos</u>, depois <u>Saldo (SG)</u>, depois <u>Gols Pró (GP)</u>, e por fim nome. <b>PPG</b> = Pontos por Jogo.
+        </div>
+      </div>
+
+      <div id="chartPts" aria-label="Gráfico Top 10 por pontos"></div>
+      <div id="chartWin" aria-label="Gráfico Top 5 por aproveitamento"></div>
+
+      <table class="table" id="tblLiga">
+        <thead>
+          <tr>
+            <th>#</th><th class="rank">Atleta</th>
+            <th>J</th><th>V</th><th>E</th><th>D</th>
+            <th>GP</th><th>GC</th><th>SG</th><th>Pts</th><th>PPG</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
   </main>
 
+  <!-- Toast de feedback -->
   <div id="toast" aria-live="polite"></div>
 
   <noscript>
     <div class="container card" style="margin-top:12px">Ative o JavaScript para usar a Liga da Firma.</div>
   </noscript>
 
-  <!-- Entrypoint correto para quando o HTML está em /public -->
+  <!-- Entrypoint correto (HTML está em /public) -->
   <script type="module" src="../src/main.js"></script>
 </body>
 </html>

@@ -64,7 +64,6 @@ nav.container{ position: sticky; top: 8px; z-index: 50; backdrop-filter: blur(va
 [data-route][data-active="true"], [data-route][aria-current="page"]{
   border-color:#21d37a; color:#c9ffd8; box-shadow:0 0 0 3px rgba(33,211,122,.12) inset;
 }
-/* Visual “pill” ativo + glow */
 [data-route]{ transition: filter .12s ease, transform .02s ease, background .18s ease, box-shadow .18s ease }
 [data-route][data-active="true"], [data-route][aria-current="page"]{
   background: linear-gradient(180deg, rgba(33,211,122,.16), rgba(33,211,122,.08));
@@ -123,7 +122,6 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{ -webkit-appea
   background:transparent;color:var(--ink);border:1px solid var(--line2);
   padding:10px 14px;border-radius:14px;cursor:pointer
 }
-/* Botões com ripple (opcional; precisa do JS de ripple) */
 .btn, .btn-ghost{ position: relative; overflow: hidden }
 .ripple{
   position:absolute; inset:auto auto 0 0; width:12px; height:12px; border-radius:50%;
@@ -151,7 +149,6 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{ -webkit-appea
 }
 .chip:hover{filter:brightness(1.05)}
 .chip:active{transform:translateY(1px)}
-/* Estados — compatível com classes "is-a/is-b" e "A/B" do JS */
 .chip.is-a, .chip.A{outline:2px solid var(--glow-a); box-shadow:0 0 0 3px rgba(46,229,141,.12)}
 .chip.is-a::after, .chip.A::after{
   content:"A"; position:absolute; right:-6px; top:-6px;
@@ -166,7 +163,6 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{ -webkit-appea
   width:20px;height:20px;display:grid;place-items:center;border-radius:50%;
   font-size:12px; font-weight:700;
 }
-/* estado “fora” explícito (opcional) */
 .chip.out{opacity:.9}
 
 /* ===== Times (listas A/B) ===== */
@@ -283,7 +279,6 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{ -webkit-appea
 .up{color:#2ee58d}.down{color:#ff6b6b}
 .badge{display:inline-block;background:#163c27;border:1px solid var(--line2);padding:2px 8px;border-radius:999px;font-size:.85rem;color:var(--muted)}
 .section-title{margin:14px 0 6px;font-weight:700}
-/* foco por teclado na linha */
 .table tr.selected{ outline:2px solid var(--ring); outline-offset:-2px }
 
 /* ===== Toast ===== */
@@ -296,7 +291,6 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{ -webkit-appea
 }
 #toast[style*="opacity: 1"]{ transform: translateY(0) }
 #toast.err{color:#ffdede;border:1px solid #ff6b6b}
-/* Suporte ao ui/toast.js (classes de tipo) */
 .toast{position:fixed;right:16px;bottom:16px; z-index:1100;
   padding:10px 14px;border-radius:12px;border:1px solid var(--line2);box-shadow:var(--shadow);
   opacity:0;pointer-events:none;transition:opacity .3s ease;background:#163c27;color:#aaf0c3}
@@ -306,10 +300,8 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{ -webkit-appea
 .toast.error{border-color:#ff6b6b;color:#ffdede;background:#301919}
 
 /* ===== Ajuda & Dicas ===== */
-.helpbar{
-  display:flex;align-items:center;gap:10px;margin:-4px 0 10px
-}
-body:not(.show-help) .helpbar{ display:none } /* escondidas por padrão; help.js liga com .show-help */
+.helpbar{display:flex;align-items:center;gap:10px;margin:-4px 0 10px}
+body:not(.show-help) .helpbar{ display:none }
 .hint{
   display:flex;gap:10px;align-items:flex-start;
   background:#113521;border:1px solid var(--line2);color:var(--muted);
@@ -334,13 +326,12 @@ body:not(.show-help) .helpbar{ display:none } /* escondidas por padrão; help.js
   display:none
 }
 .help[aria-expanded="true"] .tooltip{display:block}
-/* setinha */
 .tooltip::after{
   content:""; position:absolute; left:50%; transform: translateX(-50%);
   top:100%; border:8px solid transparent; border-top-color:#0f3924;
 }
 
-/* ===== Modal (ui/modal.js) ===== */
+/* ===== Modal ===== */
 .modal-open{ overflow:hidden }
 #modal-root{ position:fixed; inset:0; z-index:1200 }
 .modal-overlay{ position:absolute; inset:0; background:rgba(0,0,0,.45); backdrop-filter: blur(4px) }
@@ -357,7 +348,7 @@ body:not(.show-help) .helpbar{ display:none } /* escondidas por padrão; help.js
 .modal-body{ padding:14px }
 .modal-foot{ display:flex; justify-content:flex-end; gap:8px; padding:10px 14px; border-top:1px solid var(--line2) }
 
-/* ===== Player Chips e Cards (compatibilidade) ===== */
+/* ===== Player Chips e Cards ===== */
 .player-chip{
   position:relative;
   padding:6px 12px 6px 10px;border-radius:999px;
@@ -400,13 +391,12 @@ body:not(.show-help) .helpbar{ display:none } /* escondidas por padrão; help.js
 .hero .ball{ animation: float 4s ease-in-out infinite }
 @keyframes float{ 0%,100%{ transform: translateY(0) } 50%{ transform: translateY(-3px) } }
 
-/* Pequenos refinamentos de foco */
 :focus-visible{
   outline: 2px solid color-mix(in srgb, var(--accent) 60%, white 0%);
   box-shadow: 0 0 0 6px rgba(33,211,122,.12);
 }
 
-/* Scrollbar (webkit) */
+/* Scrollbar */
 *::-webkit-scrollbar{ height:10px; width:10px }
 *::-webkit-scrollbar-thumb{ background:#1a4d30; border-radius:12px; border:2px solid #0e2a1b }
 *::-webkit-scrollbar-track{ background:transparent }
