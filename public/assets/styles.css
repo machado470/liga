@@ -1,0 +1,417 @@
+/* ========== LIGA DA FIRMA 2025 – styles.css (atualizado) ========== */
+/* Tema, layout e componentes compatíveis com o index.html modular  */
+
+/* ===== Tokens ===== */
+:root{
+  --bg0:#102a1a;
+  --bg1:#143722;
+  --ink:#eaf7e9;
+  --muted:#a8c7ad;
+
+  --line:#24563a;
+  --line2:#2b6a45;
+
+  --card:#14301f;
+  --card2:#173823;
+
+  --accent:#21d37a;
+  --accent-600:#16a34a;
+  --accent-700:#15803d;
+
+  --glow-a: rgba(46,229,141,.55);
+  --glow-b: rgba(33,211,122,.75);
+
+  --shadow:0 6px 20px rgba(0,0,0,.35);
+  --radius:18px;
+  --radius-lg:22px;
+
+  /* Visual upgrade */
+  --glass: rgba(255,255,255,.05);
+  --blur: 8px;
+  --ring: #2ee58d;
+}
+
+/* ===== Base ===== */
+*{box-sizing:border-box}
+html,body{
+  margin:0;padding:0;
+  background:
+    radial-gradient(1200px 800px at 10% -10%, #1a4d2b 0%, transparent 55%),
+    linear-gradient(180deg,var(--bg0),var(--bg1));
+  color:var(--ink);
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+}
+a{color:inherit;text-decoration:none}
+.container{max-width:1100px;margin:0 auto;padding:18px}
+:focus-visible{outline:3px solid rgba(33,211,122,.45); outline-offset:2px; border-radius:12px}
+
+/* ===== Hero ===== */
+.hero{
+  background:linear-gradient(180deg, rgba(20,60,35,.85), rgba(20,60,35,.65));
+  border:1px solid var(--line);
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow);
+  padding:18px 20px;
+  display:flex;gap:14px;align-items:center
+}
+.hero .ball{font-size:40px;filter:drop-shadow(0 2px 0 rgba(0,0,0,.2))}
+.hero h1{margin:0;font-size:32px;letter-spacing:.4px}
+.hero .sub{opacity:.9;margin-top:2px}
+
+/* ===== Nav (SPA) ===== */
+nav.container{ position: sticky; top: 8px; z-index: 50; backdrop-filter: blur(var(--blur)); }
+[data-route]{transition:filter .12s ease, transform .02s ease}
+[data-route][data-active="true"], [data-route][aria-current="page"]{
+  border-color:#21d37a; color:#c9ffd8; box-shadow:0 0 0 3px rgba(33,211,122,.12) inset;
+}
+/* Visual “pill” ativo + glow */
+[data-route]{ transition: filter .12s ease, transform .02s ease, background .18s ease, box-shadow .18s ease }
+[data-route][data-active="true"], [data-route][aria-current="page"]{
+  background: linear-gradient(180deg, rgba(33,211,122,.16), rgba(33,211,122,.08));
+  border-color: rgba(33,211,122,.55);
+  box-shadow: 0 6px 22px rgba(33,211,122,.12), inset 0 0 0 1px rgba(255,255,255,.05);
+}
+
+/* ===== Cards ===== */
+.card{
+  background:linear-gradient(180deg,var(--card),var(--card2));
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:18px;margin:18px 0;
+  border: 1px solid transparent;
+  background:
+    linear-gradient(180deg,var(--card),var(--card2)) padding-box,
+    linear-gradient(120deg, rgba(46,229,141,.35), rgba(0,0,0,0) 30%, rgba(46,229,141,.18)) border-box;
+  overflow: clip;
+}
+.card h2{margin:0 0 10px;font-size:24px;display:flex;align-items:center;gap:10px;letter-spacing:.2px}
+.card h2::after{
+  content: ""; width:6px;height:6px;border-radius:50%;
+  background: var(--accent); margin-left:6px; box-shadow: 0 0 18px var(--accent);
+}
+.muted{color:var(--muted)}
+.mt8{margin-top:8px}.mt12{margin-top:12px}
+
+/* ===== Inputs e botões ===== */
+.input, select, input[type="text"], input[type="number"], input[type="date"]{
+  width:100%; background:#113521; color:var(--ink);
+  border:1px solid var(--line2); border-radius:14px; padding:10px 12px; outline:none;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.02)
+}
+.input:focus, select:focus, input[type="date"]:focus{
+  border-color:var(--accent-600); box-shadow:0 0 0 3px rgba(33,211,122,.18)
+}
+.input::placeholder{ color: color-mix(in hsl, var(--muted) 86%, white 4%) }
+input[type="number"]{ font-variant-numeric: tabular-nums }
+input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0 }
+
+.select-small{max-width:160px}
+.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+
+.btn{
+  background:linear-gradient(180deg,var(--accent),var(--accent-600));
+  color:#062912; border:1px solid #1c6b3d; border-radius:14px;
+  padding:10px 14px; cursor:pointer; font-weight:600;
+  transition:transform .04s ease, filter .12s ease
+}
+.btn:hover{filter:brightness(1.05)}
+.btn:active{transform:translateY(1px)}
+.btn:disabled{opacity:.55;cursor:not-allowed;filter:grayscale(.25)}
+.btn-ghost{
+  background:transparent;color:var(--ink);border:1px solid var(--line2);
+  padding:10px 14px;border-radius:14px;cursor:pointer
+}
+/* Botões com ripple (opcional; precisa do JS de ripple) */
+.btn, .btn-ghost{ position: relative; overflow: hidden }
+.ripple{
+  position:absolute; inset:auto auto 0 0; width:12px; height:12px; border-radius:50%;
+  background: rgba(255,255,255,.28); transform: translate(-50%,-50%) scale(0);
+  animation: ripple .6s ease-out; pointer-events:none;
+}
+@keyframes ripple{ to{ transform: translate(-50%,-50%) scale(18); opacity:0 } }
+
+.btn-ghost.danger{border-color:#5b2b2b;color:#ffdede}
+.btn-ghost.danger:hover{background:#301919}
+
+/* ===== Grids ===== */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+
+/* ===== Chips (Atletas) ===== */
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{
+  position:relative;
+  padding:6px 12px 6px 10px;border-radius:999px;
+  background: linear-gradient(180deg, #1b462c, #163a25);
+  border:1px solid var(--line2); cursor:pointer;
+  user-select:none; transition:filter .12s ease, transform .02s ease;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.03), 0 4px 12px rgba(0,0,0,.25);
+}
+.chip:hover{filter:brightness(1.05)}
+.chip:active{transform:translateY(1px)}
+/* Estados — compatível com classes "is-a/is-b" e "A/B" do JS */
+.chip.is-a, .chip.A{outline:2px solid var(--glow-a); box-shadow:0 0 0 3px rgba(46,229,141,.12)}
+.chip.is-a::after, .chip.A::after{
+  content:"A"; position:absolute; right:-6px; top:-6px;
+  background:#0e281a; border:1px solid #1c6b3d; color:#a6f3c9;
+  width:20px;height:20px;display:grid;place-items:center;border-radius:50%;
+  font-size:12px; font-weight:700;
+}
+.chip.is-b, .chip.B{outline:2px solid var(--glow-b); box-shadow:0 0 0 3px rgba(33,211,122,.15)}
+.chip.is-b::after, .chip.B::after{
+  content:"B"; position:absolute; right:-6px; top:-6px;
+  background:#0d2619; border:1px solid #1b6f4a; color:#c4ffdf;
+  width:20px;height:20px;display:grid;place-items:center;border-radius:50%;
+  font-size:12px; font-weight:700;
+}
+/* estado “fora” explícito (opcional) */
+.chip.out{opacity:.9}
+
+/* ===== Times (listas A/B) ===== */
+.team{
+  min-height:64px;border:1px dashed var(--line2);
+  border-radius:14px;padding:8px;background:#113521
+}
+.team .p{
+  display:inline-block;margin:4px 6px;padding:6px 10px;border-radius:999px;background:#15442a
+}
+
+/* ===== Campo Tático ===== */
+.formations{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.pitch-wrap{display:flex;flex-direction:column;gap:8px}
+.pitch-head{display:flex;justify-content:space-between;align-items:center}
+.pitch{
+  aspect-ratio: 2 / 3;
+  background: radial-gradient(120% 90% at 50% -10%, #13432a 0%, #0e2a1b 45%);
+  border-radius:16px;
+  padding:8px;
+  border:1px solid var(--line);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.04), var(--shadow);
+}
+.field{
+  position:relative; width:100%; height:100%; border-radius:12px;
+  background: repeating-linear-gradient(0deg, #124d31 0 18px, #0f4028 18px 36px);
+  outline:1px dashed color-mix(in srgb, var(--line2) 88%, transparent);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.03);
+}
+.field::before{
+  content:""; position:absolute; left:50%; top:0; bottom:0;
+  width:2px; background:rgba(255,255,255,.18); transform:translateX(-50%);
+}
+.field::after{
+  content:""; position:absolute; left:50%; top:50%;
+  width:70px; height:70px; border-radius:50%;
+  border:2px solid rgba(255,255,255,.18);
+  transform:translate(-50%,-50%);
+}
+.players{position:absolute; inset:0}
+
+/* ===== Marcadores dos jogadores ===== */
+.player{
+  position:absolute; transform:translate(-50%,-50%);
+  display:flex; flex-direction:column; align-items:center; gap:4px;
+  pointer-events:none;
+}
+.player .shirt{
+  width:28px; height:auto; display:block;
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,.45));
+}
+.player .name{
+  white-space:nowrap; font-weight:700; font-size:12px;
+  padding:4px 8px; border-radius:999px;
+  color:#eafff2; background:rgba(10,26,18,.6);
+  border:1px solid var(--line2); backdrop-filter:blur(2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.04);
+}
+
+/* ===== Placar / Registro ===== */
+.score{display:flex;align-items:center;gap:10px}
+.score-in{
+  width:84px;text-align:center;font-weight:800;font-size:22px;
+  letter-spacing:.5px
+}
+.score .x{opacity:.8;font-size:18px}
+#lblA,#lblB{
+  font-weight:800;background:#113521;
+  border:1px solid var(--line2);
+  padding:6px 10px;border-radius:999px;min-width:46px;text-align:center
+}
+
+/* ===== Calendário e Jogos ===== */
+.cal-toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.cal-head { display:flex; gap:8px; align-items:center; margin-top:8px }
+.games{ display:grid; gap:10px; margin-top:10px }
+.game-card{
+  position: relative; overflow: hidden;
+  display:flex; gap:12px; align-items:center; justify-content:space-between;
+  padding:10px 12px; border:1px solid var(--line2); border-radius:12px;
+  background: linear-gradient(180deg,#113521,#11321f);
+}
+.game-card::before{
+  content:""; position:absolute; left:0; top:0; bottom:0; width:3px; background: var(--accent);
+  opacity:.7
+}
+.game-left{ display:flex; gap:12px; align-items:center; flex-wrap:wrap }
+.tag{ background:#163c27; border:1px solid var(--line2); padding:2px 8px; border-radius:999px; font-size:.85rem; color:var(--muted)}
+.teams{ font-weight:700 }
+.score-badge{ font-weight:800; padding:4px 8px; border-radius:999px; background: linear-gradient(180deg,#165032,#15442a); border:1px solid var(--line2); font-variant-numeric: tabular-nums }
+.game-obs{ color:var(--muted); font-size:.9rem }
+.btn-mini{
+  background:transparent; color:#ffdede; border:1px solid #5b2b2b;
+  padding:6px 10px; border-radius:10px; cursor:pointer
+}
+.btn-mini:hover{ background:#301919 }
+
+/* ===== Tabela (Ranking) ===== */
+.table{width:100%;border-collapse:collapse;border-radius:var(--radius);overflow:hidden}
+.table thead th{
+  background:#18452b; border-bottom:1px solid var(--line2); padding:10px 8px; font-weight:700;
+  position: sticky; top: 0; z-index: 2; backdrop-filter: blur(6px);
+  box-shadow: 0 1px 0 0 rgba(0,0,0,.25);
+}
+.table td,.table th{padding:10px 8px;border-bottom:1px solid var(--line2);text-align:center}
+.table td:nth-child(2), .table th:nth-child(2){text-align:left}
+.table tbody tr:nth-child(odd){background:rgba(22,50,32,.28)}
+.table tbody tr:nth-child(1) .rank{ color:#b8ffd6 }
+.table tbody tr:nth-child(2) .rank{ color:#d8ffe9 }
+.table tbody tr:nth-child(3) .rank{ color:#eafff7 }
+.table tr:hover{background:#153c27; filter: brightness(1.03) }
+.rank{display:flex;align-items:center;gap:8px;justify-content:flex-start}
+.medal{width:24px;display:inline-block;text-align:center}
+.up{color:#2ee58d}.down{color:#ff6b6b}
+.badge{display:inline-block;background:#163c27;border:1px solid var(--line2);padding:2px 8px;border-radius:999px;font-size:.85rem;color:var(--muted)}
+.section-title{margin:14px 0 6px;font-weight:700}
+/* foco por teclado na linha */
+.table tr.selected{ outline:2px solid var(--ring); outline-offset:-2px }
+
+/* ===== Toast ===== */
+#toast{
+  position:fixed;right:16px;bottom:16px; z-index:1100;
+  background:#163c27;border:1px solid var(--line2);
+  padding:10px 14px;border-radius:12px;box-shadow:var(--shadow);
+  transition:opacity .3s ease, transform .3s ease;pointer-events:none;opacity:0;color:#aaf0c3;
+  transform: translateY(10px);
+}
+#toast[style*="opacity: 1"]{ transform: translateY(0) }
+#toast.err{color:#ffdede;border:1px solid #ff6b6b}
+/* Suporte ao ui/toast.js (classes de tipo) */
+.toast{position:fixed;right:16px;bottom:16px; z-index:1100;
+  padding:10px 14px;border-radius:12px;border:1px solid var(--line2);box-shadow:var(--shadow);
+  opacity:0;pointer-events:none;transition:opacity .3s ease;background:#163c27;color:#aaf0c3}
+.toast.info{border-color:var(--line2)}
+.toast.success{border-color:#1c6b3d;color:#b8ffd6}
+.toast.warn{border-color:#8a6f2a;color:#ffe7a3;background:#3a3215}
+.toast.error{border-color:#ff6b6b;color:#ffdede;background:#301919}
+
+/* ===== Ajuda & Dicas ===== */
+.helpbar{
+  display:flex;align-items:center;gap:10px;margin:-4px 0 10px
+}
+body:not(.show-help) .helpbar{ display:none } /* escondidas por padrão; help.js liga com .show-help */
+.hint{
+  display:flex;gap:10px;align-items:flex-start;
+  background:#113521;border:1px solid var(--line2);color:var(--muted);
+  padding:10px 12px;border-radius:12px; line-height:1.35
+}
+.hint b{color:#eaf7e9}
+.help-toggle{
+  margin-left:auto;background:#163c27;border:1px solid var(--line2);
+  color:var(--muted);padding:6px 10px;border-radius:10px;cursor:pointer;font-size:.9rem
+}
+.help-toggle[aria-pressed="true"]{color:#c9ffd8;border-color:#21d37a}
+.help{
+  position:relative;display:inline-flex;align-items:center;
+  width:22px;height:22px;border-radius:50%;justify-content:center;
+  background:#18452b;border:1px solid var(--line2);color:#a8c7ad;cursor:pointer;font-weight:700
+}
+.help:hover{color:#eaf7e9}
+.tooltip{
+  position:absolute;z-index:30;left:50%;transform:translateX(-50%);
+  bottom:130%;min-width:220px;max-width:280px;padding:10px 12px;border-radius:10px;
+  background:#0f3924;border:1px solid var(--line2);color:#cfead5;box-shadow:var(--shadow);
+  display:none
+}
+.help[aria-expanded="true"] .tooltip{display:block}
+/* setinha */
+.tooltip::after{
+  content:""; position:absolute; left:50%; transform: translateX(-50%);
+  top:100%; border:8px solid transparent; border-top-color:#0f3924;
+}
+
+/* ===== Modal (ui/modal.js) ===== */
+.modal-open{ overflow:hidden }
+#modal-root{ position:fixed; inset:0; z-index:1200 }
+.modal-overlay{ position:absolute; inset:0; background:rgba(0,0,0,.45); backdrop-filter: blur(4px) }
+.modal{
+  position:relative; margin:6vh auto; max-width:560px; width:min(92vw,560px);
+  border-radius:16px; overflow:hidden;
+  background:linear-gradient(180deg,var(--card),var(--card2));
+  border:1px solid var(--line);
+  box-shadow: 0 18px 40px rgba(0,0,0,.5);
+}
+.modal-head{ display:flex; align-items:center; justify-content:space-between; gap:8px; padding:12px 14px; border-bottom:1px solid var(--line2) }
+.modal-head h3{ margin:0; font-size:18px }
+.modal-close{ background:transparent; border:1px solid var(--line2); color:var(--ink); border-radius:10px; padding:4px 10px; cursor:pointer }
+.modal-body{ padding:14px }
+.modal-foot{ display:flex; justify-content:flex-end; gap:8px; padding:10px 14px; border-top:1px solid var(--line2) }
+
+/* ===== Player Chips e Cards (compatibilidade) ===== */
+.player-chip{
+  position:relative;
+  padding:6px 12px 6px 10px;border-radius:999px;
+  background:#1a4128;border:1px solid var(--line2);cursor:pointer;
+  user-select:none;transition:filter .12s ease, transform .02s ease
+}
+.player-chip:hover{filter:brightness(1.05)}
+.player-chip:active{transform:translateY(1px)}
+.player-chip.out{opacity:.9}
+.player-chip.is-a,.player-chip.A{outline:2px solid var(--glow-a);box-shadow:0 0 0 3px rgba(46,229,141,.12)}
+.player-chip.is-a::after,.player-chip.A::after{
+  content:"A";position:absolute;right:-6px;top:-6px;background:#0e281a;border:1px solid #1c6b3d;color:#a6f3c9;
+  width:20px;height:20px;display:grid;place-items:center;border-radius:50%;font-size:12px;font-weight:700
+}
+.player-chip.is-b,.player-chip.B{outline:2px solid var(--glow-b);box-shadow:0 0 0 3px rgba(33,211,122,.15)}
+.player-chip.is-b::after,.player-chip.B::after{
+  content:"B";position:absolute;right:-6px;top:-6px;background:#0d2619;border:1px solid #1b6f4a;color:#c4ffdf;
+  width:20px;height:20px;display:grid;place-items:center;border-radius:50%;font-size:12px;font-weight:700
+}
+.team .player-card{
+  display:inline-block;margin:4px 6px;padding:6px 10px;border-radius:999px;background:#15442a
+}
+.chips .player-chip{display:inline-flex;gap:8px;align-items:center}
+
+/* ===== Responsivo ===== */
+@media (max-width: 920px){
+  .formations{grid-template-columns:1fr}
+  .pitch{aspect-ratio: 2/3}
+}
+@media (max-width: 720px){
+  .container{padding:14px}
+  .grid-3{grid-template-columns:1fr}
+  .grid-2{grid-template-columns:1fr}
+  .score{gap:8px}
+  .score-in{width:72px;font-size:20px}
+  .chip{padding:6px 10px}
+}
+
+/* ===== Motion & polish ===== */
+.hero .ball{ animation: float 4s ease-in-out infinite }
+@keyframes float{ 0%,100%{ transform: translateY(0) } 50%{ transform: translateY(-3px) } }
+
+/* Pequenos refinamentos de foco */
+:focus-visible{
+  outline: 2px solid color-mix(in srgb, var(--accent) 60%, white 0%);
+  box-shadow: 0 0 0 6px rgba(33,211,122,.12);
+}
+
+/* Scrollbar (webkit) */
+*::-webkit-scrollbar{ height:10px; width:10px }
+*::-webkit-scrollbar-thumb{ background:#1a4d30; border-radius:12px; border:2px solid #0e2a1b }
+*::-webkit-scrollbar-track{ background:transparent }
+
+/* Prefere menos movimento */
+@media (prefers-reduced-motion: reduce){
+  *{ animation: none !important; transition: none !important }
+}

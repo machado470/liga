@@ -1,0 +1,72 @@
+// src/core/config.js — atualizado
+// Chaves globais, defaults, helpers de data e namespacing alinhados ao que você pediu
+// (intuitivo, com preferências de UI e key de stats padronizada)
+
+export const TZ = 'America/Sao_Paulo';
+
+export const K = {
+  ns: 'liga25:',           // namespace base no localStorage
+
+  // Dados
+  settings:  'settings',   // pontos por resultado
+  athletes:  'athletes',   // elenco completo
+  matches:   'matches:',   // prefixo por dia → matches:YYYY-MM-DD
+  lastDay:   'lastDay',    // última data jogada (YYYY-MM-DD)
+  stats:     'stats',      // estatísticas agregadas por atleta (fixado)
+
+  // Tático / posições por dia
+  manualPos: 'manualPos:', // posições manuais por dia (A/B)
+  forms:     'forms:',     // formações por dia (A/B)
+
+  // Preferências de UI (para site mais “intuitivo”)
+  uiHelp:        'ui:help',        // boolean → mostrar/esconder dicas globais
+  uiCollapsed:   'ui:collapsed:',  // prefixo → estado de colapso por seção (ui:collapsed:ID=true/false)
+};
+
+// ===== Defaults =====
+export const DEFAULT_SETTINGS = Object.freeze({
+  ptsV: 3,
+  ptsE: 1,
+  ptsD: 0,
+});
+
+// ===== Namespacing helpers =====
+export const nsKey         = (sub)    => K.ns + sub;
+export const keySettings   = ()       => nsKey(K.settings);
+export const keyAthletes   = ()       => nsKey(K.athletes);
+export const keyLastDay    = ()       => nsKey(K.lastDay);
+export const keyStats      = ()       => nsKey(K.stats);
+
+// Dinâmicos por data
+export const keyMatches    = (iso)    => nsKey(K.matches)   + iso;
+export const keyManualPos  = (iso)    => nsKey(K.manualPos) + iso;
+export const keyForms      = (iso)    => nsKey(K.forms)     + iso;
+
+// Preferências de UI
+export const keyUIHelp     = ()               => nsKey(K.uiHelp);
+export const keyUICollapse = (sectionId='')   => nsKey(K.uiCollapsed) + String(sectionId || 'unknown');
+
+// ===== Datas (timezone-safe p/ SP) =====
+export function todayISO(tz = TZ) {
+  // en-CA garante yyyy-mm-dd
+  return new Intl.DateTimeFormat('en-CA', {
+    timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit'
+  }).format(new Date());
+}
+
+export function addDaysISO(iso, days, tz = TZ) {
+  const [y,m,d] = String(iso).split('-').map(Number);
+  // 12:00 UTC evita flip de DST ao converter
+  const base = new Date(Date.UTC(y, m-1, d, 12));
+  base.setUTCDate(base.getUTCDate() + (Number(days) || 0));
+  return new Intl.DateTimeFormat('en-CA', {
+    timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit'
+  }).format(base);
+}
+
+export const prevDayISO = (iso, tz = TZ) => addDaysISO(iso, -1, tz);
+export const nextDayISO = (iso, tz = TZ) => addDaysISO(iso, +1, tz);
+
+export function isSameISO(a, b) {
+  return String(a) === String(b);
+}

@@ -1,0 +1,79 @@
+{
+  "meta": {
+    "seedName": "liga-firma-2025-seed",
+    "version": "1.0.0",
+    "createdAt": "2025-09-30",
+    "author": "Liga da Firma Dev Team",
+    "description": "Semente de dados iniciais para popular a Liga da Firma do zero com elenco, regras e partidas de exemplo."
+  },
+
+  "settings": {
+    "ptsV": 3,
+    "ptsE": 1,
+    "ptsD": 0,
+    "autoResetDaily": false
+  },
+
+  "athletes": [
+    "João",
+    "Pedro",
+    "Lucas",
+    "Marcos",
+    "Rafael",
+    "Felipe",
+    "André",
+    "Diego",
+    "Carlos",
+    "Henrique"
+  ],
+
+  "matches": [
+    {
+      "date": "2025-09-25",
+      "teamA": ["João", "Pedro", "Lucas"],
+      "teamB": ["Marcos", "Rafael", "Felipe"],
+      "scoreA": 4,
+      "scoreB": 2,
+      "obs": "Jogo de abertura"
+    },
+    {
+      "date": "2025-09-26",
+      "teamA": ["André", "João", "Diego"],
+      "teamB": ["Carlos", "Henrique", "Pedro"],
+      "scoreA": 3,
+      "scoreB": 3,
+      "obs": "Clássico empatado"
+    },
+    {
+      "date": "2025-09-27",
+      "teamA": ["Lucas", "Pedro", "Marcos"],
+      "teamB": ["Rafael", "Felipe", "Henrique"],
+      "scoreA": 1,
+      "scoreB": 2,
+      "obs": "Rodada 3 — virada no fim"
+    }
+  ],
+
+  "stats": {
+    "João":   { "J": 2, "V": 1, "E": 1, "D": 0, "GP": 7, "GC": 5, "SG": 2, "Pts": 4 },
+    "Pedro":  { "J": 3, "V": 1, "E": 1, "D": 1, "GP": 8, "GC": 7, "SG": 1, "Pts": 4 },
+    "Lucas":  { "J": 2, "V": 1, "E": 0, "D": 1, "GP": 5, "GC": 4, "SG": 1, "Pts": 3 },
+    "Marcos": { "J": 2, "V": 0, "E": 0, "D": 2, "GP": 4, "GC": 6, "SG": -2, "Pts": 0 },
+    "Rafael": { "J": 2, "V": 1, "E": 0, "D": 1, "GP": 4, "GC": 5, "SG": -1, "Pts": 3 },
+    "Felipe": { "J": 2, "V": 1, "E": 0, "D": 1, "GP": 4, "GC": 5, "SG": -1, "Pts": 3 },
+    "André":  { "J": 1, "V": 0, "E": 1, "D": 0, "GP": 3, "GC": 3, "SG": 0, "Pts": 1 },
+    "Diego":  { "J": 1, "V": 0, "E": 1, "D": 0, "GP": 3, "GC": 3, "SG": 0, "Pts": 1 },
+    "Carlos": { "J": 1, "V": 0, "E": 1, "D": 0, "GP": 3, "GC": 3, "SG": 0, "Pts": 1 },
+    "Henrique": { "J": 2, "V": 1, "E": 1, "D": 0, "GP": 5, "GC": 4, "SG": 1, "Pts": 4 }
+  },
+
+  "charts": {
+    "topScorers": ["Pedro", "João"],
+    "topPPG": ["João", "Henrique"],
+    "bestDefense": ["Lucas"]
+  },
+
+  "forms": {},
+  "manualPos": {},
+  "lastDay": "2025-09-27"
+}

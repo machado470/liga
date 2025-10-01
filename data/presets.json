@@ -1,0 +1,66 @@
+{
+  "meta": {
+    "appName": "Liga da Firma 2025",
+    "version": "1.0.0",
+    "createdAt": "2025-09-30",
+    "author": "Liga da Firma Dev Team",
+    "description": "Presets iniciais para regras, elenco, estatísticas e partidas da Liga da Firma 2025.",
+    "notes": "Este arquivo pode ser usado para resetar ou importar dados iniciais no sistema."
+  },
+
+  "settings": {
+    "ptsV": 3,
+    "ptsE": 1,
+    "ptsD": 0,
+    "autoResetDaily": true,
+    "maxPlayersPerTeam": 8
+  },
+
+  "athletes": [
+    "João",
+    "Pedro",
+    "Lucas",
+    "Marcos",
+    "Rafael",
+    "Felipe"
+  ],
+
+  "matches": {
+    "2025-09-30": [
+      {
+        "date": "2025-09-30",
+        "teamA": "João, Pedro, Lucas",
+        "teamB": "Marcos, Rafael, Felipe",
+        "scoreA": 3,
+        "scoreB": 2,
+        "obs": "Rodada inaugural"
+      }
+    ]
+  },
+
+  "lastDay": "2025-09-30",
+
+  "forms": {
+    "2025-09-30": {
+      "A": "3-2",
+      "B": "2-3"
+    }
+  },
+
+  "manualPos": {},
+
+  "stats": {
+    "João":   { "J": 1, "V": 1, "E": 0, "D": 0, "GP": 3, "GC": 2, "SG": 1, "Pts": 3 },
+    "Pedro":  { "J": 1, "V": 1, "E": 0, "D": 0, "GP": 3, "GC": 2, "SG": 1, "Pts": 3 },
+    "Lucas":  { "J": 1, "V": 1, "E": 0, "D": 0, "GP": 3, "GC": 2, "SG": 1, "Pts": 3 },
+    "Marcos": { "J": 1, "V": 0, "E": 0, "D": 1, "GP": 2, "GC": 3, "SG": -1, "Pts": 0 },
+    "Rafael": { "J": 1, "V": 0, "E": 0, "D": 1, "GP": 2, "GC": 3, "SG": -1, "Pts": 0 },
+    "Felipe": { "J": 1, "V": 0, "E": 0, "D": 1, "GP": 2, "GC": 3, "SG": -1, "Pts": 0 }
+  },
+
+  "charts": {
+    "topScorers": ["João", "Pedro"],
+    "topPPG": ["João"],
+    "bestDefense": ["Lucas"]
+  }
+}
