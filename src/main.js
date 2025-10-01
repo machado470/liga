@@ -1,5 +1,4 @@
-// src/main.js — atualizado e consistente (namespaces, toasts, bootstrap condicional)
-// Ponto de entrada principal da Liga da Firma 2025
+// src/main.js — ponto de entrada da Liga da Firma 2025
 
 import { init as initAthletes } from './modules/athletes.js';
 import { init as initPitch }     from './modules/pitch.js';
@@ -8,17 +7,19 @@ import { init as initCalendar }  from './modules/calendar.js';
 import { init as initRanking }   from './modules/ranking.js';
 import { initRouter }            from './core/router.js';
 
-import { showToast } from './ui/toast.js';
-import { setText }   from './utils/dom.js';
+import { showToast }   from './ui/toast.js';
+import { setText }     from './utils/dom.js';
 import { read, write } from './core/storage.js';
 import { K, todayISO, keyLastDay } from './core/config.js';
-import { initCharts } from './ui/chart.js';
+import { initCharts }  from './ui/chart.js';
 
-// ---------- BOOTSTRAP: injeta HTML nas sections *apenas se estiverem vazias* ----------
+console.log('✅ main.js carregado');
+
+/* ---------- Bootstrap das sections (injeta HTML só se estiver vazio) ---------- */
 function bootstrapDOM() {
-  const el = (id) => document.getElementById(id);
+  const el = id => document.getElementById(id);
 
-  // REGRAS
+  // Regras
   const secRegras = el('regras');
   if (secRegras && !secRegras.innerHTML.trim()) {
     secRegras.innerHTML = `
@@ -31,7 +32,7 @@ function bootstrapDOM() {
     `;
   }
 
-  // ATLETAS
+  // Atletas
   const secTimes = el('times');
   if (secTimes && !secTimes.innerHTML.trim()) {
     secTimes.innerHTML = `
@@ -54,7 +55,7 @@ function bootstrapDOM() {
     `;
   }
 
-  // CAMPO TÁTICO
+  // Campo tático
   const secTatico = el('tatico');
   if (secTatico && !secTatico.innerHTML.trim()) {
     secTatico.innerHTML = `
@@ -77,7 +78,7 @@ function bootstrapDOM() {
     `;
   }
 
-  // REGISTRAR PARTIDA
+  // Registrar partida
   const secRegistro = el('registro');
   if (secRegistro && !secRegistro.innerHTML.trim()) {
     secRegistro.innerHTML = `
@@ -104,7 +105,7 @@ function bootstrapDOM() {
     `;
   }
 
-  // CALENDÁRIO
+  // Calendário
   const secCal = el('calendario');
   if (secCal && !secCal.innerHTML.trim()) {
     secCal.innerHTML = `
@@ -122,15 +123,15 @@ function bootstrapDOM() {
     `;
   }
 
-  // RANKING + CHARTS
+  // Ranking + charts
   const secTabela = el('tabela');
   if (secTabela && !secTabela.innerHTML.trim()) {
     secTabela.innerHTML = `
       <h2 class="row" style="justify-content:space-between">
         <span>📊 Ranking</span><span class="badge">Tabela</span>
       </h2>
-      <div id="chartPts"></div>
-      <div id="chartWin"></div>
+      <div id="chartPts" aria-label="Gráfico Top 10 por pontos"></div>
+      <div id="chartWin" aria-label="Gráfico Top 5 por aproveitamento"></div>
       <table class="table" id="tblLiga">
         <thead>
           <tr>
@@ -145,9 +146,8 @@ function bootstrapDOM() {
   }
 }
 
-// ---------- SUBTÍTULO DA HERO (compat com gravação via keyLastDay()) ----------
+/* ---------- Subtítulo da hero ---------- */
 function readLastDayRaw() {
-  // matches.js grava usando keyLastDay() → já vem nomespaceado completo
   try {
     const raw = localStorage.getItem(keyLastDay());
     return raw ? JSON.parse(raw) : null;
@@ -155,18 +155,15 @@ function readLastDayRaw() {
     return null;
   }
 }
-
 function atualizarSubtitulo() {
-  const lastDay = readLastDayRaw(); // evita "duplo namespace"
-  if (!lastDay) {
-    setText('#subtitulo', 'Nenhuma partida registrada ainda');
-    return;
-  }
+  const lastDay = readLastDayRaw();
   const hoje = todayISO();
-  setText('#subtitulo', hoje === lastDay ? 'Rodada em andamento…' : 'Aguardando próxima rodada');
+  setText('#subtitulo', !lastDay ? 'Nenhuma partida registrada ainda'
+                                 : hoje === lastDay ? 'Rodada em andamento…'
+                                 : 'Aguardando próxima rodada');
 }
 
-// ---------- SETTINGS (regras) ----------
+/* ---------- Settings (regras) ---------- */
 function carregarSettings() {
   const s = read(K.settings, { ptsV: 3, ptsE: 1, ptsD: 0 });
   const ptsV = document.getElementById('ptsV');
@@ -176,7 +173,6 @@ function carregarSettings() {
   if (ptsE) ptsE.value = Number.isFinite(+s.ptsE) ? +s.ptsE : 1;
   if (ptsD) ptsD.value = Number.isFinite(+s.ptsD) ? +s.ptsD : 0;
 }
-
 function wireSettings() {
   ['ptsV','ptsE','ptsD'].forEach(id => {
     document.getElementById(id)?.addEventListener('change', () => {
@@ -192,24 +188,22 @@ function wireSettings() {
   });
 }
 
-// ---------- EVENTOS GLOBAIS ----------
+/* ---------- Eventos globais ---------- */
 function wireGlobalEvents() {
   document.addEventListener('partida:salva', () => {
     document.dispatchEvent(new CustomEvent('ranking:update'));
     atualizarSubtitulo();
     showToast('✅ Partida salva e ranking atualizado!', 'success');
   });
-
   document.addEventListener('partida:desfeita', () => {
     document.dispatchEvent(new CustomEvent('ranking:update'));
     atualizarSubtitulo();
     showToast('↩️ Última partida desfeita', 'info');
   });
-
   document.addEventListener('calendar:update', atualizarSubtitulo);
 }
 
-// ---------- INIT ----------
+/* ---------- Init ---------- */
 document.addEventListener('DOMContentLoaded', async () => {
   bootstrapDOM();
 
@@ -237,11 +231,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   initRanking();
   initCharts();
 
-  // Ajuda/Tooltips (opcional; só carrega se existir)
+  // Ajuda opcional
   try {
     const { initHelp } = await import('./ui/help.js');
     initHelp?.();
-  } catch { /* silencioso: ajuda é opcional */ }
+  } catch { /* ajuda é opcional */ }
 
   wireGlobalEvents();
   atualizarSubtitulo();
